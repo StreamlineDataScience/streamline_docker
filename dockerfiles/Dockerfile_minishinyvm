@@ -22,7 +22,7 @@ RUN apt-get -qq update && apt-get install -y google-cloud-sdk
 
 RUN install2.r -r https://bioconductor.org/packages/3.13/bioc -r https://bioconductor.org/packages/3.13/data/annotation -r https://bioconductor.org/packages/3.13/data/experiment -r https://bioconductor.org/packages/3.13/workflows -r https://bioconductor.org/packages/3.13/books -r https://cloud.r-project.org remotes dplyr DT flexdashboard gargle rmarkdown shiny shinyjs tibble
 
-RUN installGithub.r muschellij2/googleAuthR@5ad74f1 muschellij2/googleCloudRunner@292374375d9e02222727e3f40aeb0cdc34b8b3f1 cloudyr/googleComputeEngineR@bf4e5e7333ae331332b6df71799b6bbcf0acee5c
+RUN installGithub.r muschellij2/googleAuthR@5ad74f1 muschellij2/googleCloudRunner@292374375d9e02222727e3f40aeb0cdc34b8b3f1 muschellij2/googleComputeEngineR@82e4c4e
 
 COPY check_remotes_version.R /
 COPY install_packages_directory.R /
