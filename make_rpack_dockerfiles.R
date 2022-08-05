@@ -26,7 +26,7 @@ docker_instructions = c(
 
 pre_steps = NULL
 
-version = "4.1.1"
+version = "4.1.2"
 # for (index in seq(nrow(r_ver))) {
 from_image_base = "renv-base"
 from_image = paste0(from_image_base, "-", version)

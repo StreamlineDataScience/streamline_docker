@@ -278,6 +278,7 @@ observeEvent(input$create_image, {
       input$vm_name,
       zone = input$zone,
       scopes = c("https://www.googleapis.com/auth/drive",
+                 "https://www.googleapis.com/auth/spreadsheets",
                  "https://www.googleapis.com/auth/cloud-platform"),
       project = input$project)
     gcloud::gcloud_compute_instances_start(
