@@ -240,8 +240,11 @@ observeEvent(input$create_image, {
     print(input$dynamic_image)
     print(input$gb)
     region = gcloud:::region_from_zone(input$zone)
-    gcloud::gcloud_compute_nat_create(region = region, verbose = 2,
-                                      project = input$project)
+    try({
+      gcloud::gcloud_compute_nat_create(region = region, 
+                                        verbose = 2,
+                                        project = input$project)
+    }, silent = FALSE)
     googleComputeEngineR::gce_global_project(project = input$project)
     vm <- googleComputeEngineR::gce_vm(
       template = "rstudio-noauth",

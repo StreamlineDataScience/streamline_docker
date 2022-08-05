@@ -6,11 +6,21 @@ RUN install2.r --error \
     shinydashboard \
     DT \
     flexdashboard \
-    shinyjs 
+    shinyjs \
+    remotes
 
 RUN Rscript -e "remotes::install_github('muschellij2/googleCloudRunner')"
 RUN Rscript -e "remotes::install_github('muschellij2/googleComputeEngineR')"
+RUN Rscript -e "remotes::install_github('muschellij2/remotes')"
 
+
+RUN ["mkdir", "-m", "700", "-p", "/root/.ssh/"]
+COPY [".ssh/*", "/root/.ssh/"]
+RUN eval $(ssh-agent) && chmod 600 /root/.ssh/id_rsa && echo "StrictHostKeyChecking no" >> /etc/ssh/ssh_config && ssh-add /root/.ssh/id_rsa
+RUN ["git", "config", "--global", "user.name", "googleCloudRunner"]
+RUN ["git", "config", "--global", "user.email", "cr_buildstep_gitsetup@googleCloudRunner.com"]
+
+RUN Rscript -e "remotes::install_git('git@github.com:StreamlineDataScience/gcloud', git = 'external')"
 
 COPY apps/ /srv/shiny-server/
 RUN cat /srv/shiny-server/create_vm/index.Rmd
