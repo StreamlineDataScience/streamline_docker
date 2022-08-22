@@ -33,6 +33,7 @@ googleAuthR::gar_auth(token = token, cache = FALSE)
 project = metagce::gce_project()
 if (nchar(project) == 0) {
   projects = gcloud::gcloud_projects_list()$projectId
+  projects = projects[!grepl("^datarepo", projects)]
   project = projects[1]
 } else {
   projects = project
