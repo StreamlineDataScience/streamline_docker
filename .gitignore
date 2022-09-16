@@ -12,3 +12,4 @@ token.rds
 Dockerfile
 .ssh
 .httr-oauth-salesforcer
+*.html
