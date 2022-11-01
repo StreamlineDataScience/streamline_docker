@@ -13,8 +13,6 @@ RUN install2.r --error \
 RUN Rscript -e "remotes::install_github('muschellij2/googleCloudRunner')"
 RUN Rscript -e "remotes::install_github('muschellij2/googleComputeEngineR')"
 RUN Rscript -e "remotes::install_github('muschellij2/remotes')"
-# Assan's edit to add external disk
-RUN Rscript -e "remotes::install_github('streamlinedatascience/gcloud')"
 
 RUN ["mkdir", "-m", "700", "-p", "/root/.ssh/"]
 COPY [".ssh/*", "/root/.ssh/"]
