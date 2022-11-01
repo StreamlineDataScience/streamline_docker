@@ -274,10 +274,13 @@ observeEvent(input$create_image, {
         storageClass = "STANDARD"
       )
     }
+    # stop instances
     gcloud::gcloud_compute_instances_stop(
       input$vm_name,
       zone = input$zone,
       project = input$project)
+      
+    # set instances scopes
     gcloud::gcloud_compute_instances_set_scopes(
       input$vm_name,
       zone = input$zone,
@@ -285,6 +288,17 @@ observeEvent(input$create_image, {
                  "https://www.googleapis.com/auth/spreadsheets",
                  "https://www.googleapis.com/auth/cloud-platform"),
       project = input$project)
+    
+    # create an external disk
+    disk_name = glue::glue( "{input$vm_name}-external-disk")
+    gcloud::gcloud_compute_disk_create(disk_name, size="10GB")  
+    
+    # attach the disk to the chosen VM
+    gcloud_compute_disk_attach = function(
+    disk = disk_name),
+    instance_name = input$vm_name)
+    
+    # start the instance
     gcloud::gcloud_compute_instances_start(
       input$vm_name,
       zone = input$zone,
