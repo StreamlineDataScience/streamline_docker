@@ -21,6 +21,7 @@ library(googleCloudStorageR)
 library(DT)
 library(shinyjs)
 library(processx)
+library(glue)
 ```
 
 ```{r auth, include = FALSE}
@@ -291,12 +292,13 @@ observeEvent(input$create_image, {
     
     # create an external disk
     disk_name = glue::glue( "{input$vm_name}-external-disk")
-    gcloud::gcloud_compute_disk_create(disk_name, size="10GB")  
+    gcloud::gcloud_compute_disk_create(disk_name, size="10GB", zone=input$zone)  
     
     # attach the disk to the chosen VM
     gcloud_compute_disk_attach = function(
     disk = disk_name),
-    instance_name = input$vm_name)
+    instance_name = input$vm_name,
+    zone = input$zone)
     
     # start the instance
     gcloud::gcloud_compute_instances_start(
