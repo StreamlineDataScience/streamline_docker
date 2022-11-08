@@ -32,6 +32,7 @@ RUN /rocker_scripts/install_shiny_server.sh
 ## Add a default CRAN mirror
 # RUN echo "options(repos = c(CRAN = '${CRAN}'), download.file.method = 'libcurl')" >> ${R_HOME}/etc/Rprofile.site
 
+
 RUN /rocker_scripts/install_pandoc.sh
 RUN /rocker_scripts/install_python.sh
 
@@ -41,6 +42,8 @@ RUN python -m pip install numpy --force-reinstall --no-binary numpy
 EXPOSE 8787
 EXPOSE 3838
 EXPOSE 1410
+
+RUN echo "if (dir.exists('/R')) .libPaths('/R')" >> ${R_HOME}/etc/Rprofile.site
 
 CMD ["/init"]
 
