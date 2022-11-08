@@ -1,0 +1,20 @@
+steps:
+  - name: gcr.io/cloud-builders/docker
+    args:
+      - build
+      - -f
+      - dockerfiles/Dockerfile_streambase
+      - --tag
+      - us-docker.pkg.dev/streamline-resources/streamline-private-repo/streambase:latest
+      - --tag
+      - us-docker.pkg.dev/streamline-resources/streamline-private-repo/streambase:$BUILD_ID
+      - '.'
+      - --network=cloudbuild
+    id: building image
+  - name: gcr.io/cloud-builders/docker
+    args:
+      - push
+      - -a
+      - us-docker.pkg.dev/streamline-resources/streamline-private-repo/streambase
+    id: pushing image
+timeout: 3600s

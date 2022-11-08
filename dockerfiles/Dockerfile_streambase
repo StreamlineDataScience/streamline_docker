@@ -1,0 +1,48 @@
+FROM rocker/verse
+
+RUN apt-get -qqy update && \
+    DEBIAN_FRONTEND=noninteractive apt-get install -qqy \
+        openssh-client \
+        qpdf
+        
+# same as streamliner
+COPY streamline_startup_scripts/scripts /streamline_scripts
+RUN chmod +x /streamline_scripts/*.sh
+
+RUN /streamline_scripts/install_3rd_party.sh
+
+RUN /streamline_scripts/install_3rd_party_extensions.sh
+
+RUN /streamline_scripts/install_odbc_drivers.sh
+
+RUN /streamline_scripts/rstudio_no_login.sh
+
+# I don't want warnings to be errors
+ENV R_REMOTES_NO_ERRORS_FROM_WARNINGS=true
+
+# need this because gargle caches
+RUN mkdir -p ~/.cache/gargle
+RUN chmod 777 ~/.cache/gargle
+
+RUN /streamline_scripts/install_gcloud.sh
+
+RUN /rocker_scripts/install_shiny_server.sh
+
+## in UNSTABLE, we will install everything from source by default:
+## Add a default CRAN mirror
+# RUN echo "options(repos = c(CRAN = '${CRAN}'), download.file.method = 'libcurl')" >> ${R_HOME}/etc/Rprofile.site
+
+RUN /rocker_scripts/install_pandoc.sh
+RUN /rocker_scripts/install_python.sh
+
+# related to https://github.com/rstudio/reticulate/issues/1190
+RUN python -m pip install numpy --force-reinstall --no-binary numpy
+
+EXPOSE 8787
+EXPOSE 3838
+EXPOSE 1410
+
+CMD ["/init"]
+
+
+# EVERYTHING UP to this is all good to make it's own docker
