@@ -2,7 +2,6 @@ library(trailrun)
 library(googleCloudRunner)
 setup = cr_gce_setup()
 
-
 get_image_basename = function(x) {
   sub("Dockerfile_", "", basename(x), ignore.case = TRUE)
 }
@@ -23,6 +22,11 @@ write_docker_cloudbuild_yaml = function(dockerfile) {
   image = get_image_name(dockerfile)
   
   steps = c(
+    googleCloudRunner::cr_buildstep_gitsetup(secret = "ssh-deploy-key"),
+    cr_buildstep_git_clone(
+      "git@github.com:StreamlineDataScience/streamline_startup_scripts.git",
+      default_directory = "/workspace"
+    ),
     cr_buildstep_docker(
       image = image,
       dockerfile = dockerfile, 
@@ -44,7 +48,6 @@ cr_docker_trigger = function(dockerfile) {
     yaml_filename = yaml_filename
   )
 }
-
 
 
 dockerfile = "dockerfiles/Dockerfile_streambase"
