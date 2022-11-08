@@ -248,6 +248,7 @@ observeEvent(input$create_image, {
                                         project = input$project)
     }, silent = FALSE)
     googleComputeEngineR::gce_global_project(project = input$project)
+    print("#creating the VM")
     vm <- googleComputeEngineR::gce_vm(
       template = "rstudio-noauth",
       name = input$vm_name,
@@ -291,16 +292,18 @@ observeEvent(input$create_image, {
       project = input$project)
     
     # create an external disk
+    print("#creating the external disk")
     disk_name = glue::glue( "{input$vm_name}-external-disk")
-    #gcloud::gcloud_compute_disk_create(disk_name, size="10GB", zone=input$zone)  
+    gcloud::gcloud_compute_disk_create(disk_name, size="10GB", zone=input$zone)  
     
     # attach the disk to the chosen VM
-    #gcloud_compute_disk_attach = function(
-    #disk = disk_name),
-    #instance_name = input$vm_name,
-    #zone = input$zone)
+    gcloud_compute_disk_attach = function(
+    disk = disk_name),
+    instance_name = input$vm_name,
+    zone = input$zone)
     
     # start the instance
+    print("#creating the external disk")
     gcloud::gcloud_compute_instances_start(
       input$vm_name,
       zone = input$zone,
