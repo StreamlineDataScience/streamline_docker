@@ -43,7 +43,7 @@ EXPOSE 8787
 EXPOSE 3838
 EXPOSE 1410
 
-RUN echo "if (dir.exists('/R')) .libPaths('/R')" >> ${R_HOME}/etc/Rprofile.site
+RUN echo "if (dir.exists('/home/gcer/R')) .libPaths('/home/gcer/R')" >> ${R_HOME}/etc/Rprofile.site
 
 CMD ["/init"]
 
